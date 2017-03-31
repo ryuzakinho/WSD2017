@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Javascript Tetris</title>
-</head>
-
-<body>
-
+  <title>WSD2017 Tetris</title>
 
   <style>
     body      { font-family: Helvetica, sans-serif; }
@@ -28,6 +24,72 @@
     @media screen and (min-width: 900px) and (min-height: 900px)  { #tetris { font-size: 2.25em; width: 850px; } #menu { width: 400px; height: 800px; } #upcoming { width: 200px; height: 200px; } #canvas { width: 400px; height: 800px; } } /* 40px chunks */
   </style>
 
+  <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script>
+  /* global $, alert */
+
+  $(document).ready( function() {
+    "use strict";
+
+    // These variable track the state of this "game"
+    var playerItems = [];
+    var points = 0;
+
+    // Simulates "game over" when a score would be sent
+    $("#submit_score").click( function () {
+      var msg = {
+        "messageType": "SCORE",
+        "score": parseFloat($("#score").text())
+      };
+      window.parent.postMessage(msg, "*");
+    });
+
+    // Sends this game's state to the service.
+    // The format of the game state is decided
+    // by the game
+    $("#save").click( function () {
+      var msg = {
+        "messageType": "SAVE",
+        "gameState": {
+          "playerItems": playerItems,
+          "score": parseFloat($("#score").text())
+        }
+      };
+      window.parent.postMessage(msg, "*");
+    });
+
+    // Sends a request to the service for a
+    // state to be sent, if there is one.
+    $("#load").click( function () {
+      var msg = {
+        "messageType": "LOAD_REQUEST",
+      };
+      window.parent.postMessage(msg, "*");
+    });
+
+    // Listen incoming messages, if the messageType
+    // is LOAD then the game state will be loaded.
+    // Note that no checking is done, whether the
+    // gameState in the incoming message contains
+    // correct information.
+    //
+    // Also handles any errors that the service
+    // wants to send (displays them as an alert).
+    window.addEventListener("message", function(evt) {
+      if(evt.data.messageType === "LOAD") {
+        playerItems = evt.data.gameState.playerItems;
+        points = evt.data.gameState.score;
+        $("#score").text(points);
+        updateItems();
+      } else if (evt.data.messageType === "ERROR") {
+        alert(evt.data.info);
+      }
+    });
+    </script>
+</head>
+
+<body>
+
   <div id="tetris">
     <div id="menu">
       <p id="start"><a href="javascript:play();">Press Space to Play.</a></p>
@@ -39,7 +101,7 @@
       Sorry, this game cannot be played because your browser does not support the &lt;canvas&gt; element
     </canvas>
   </div>
-  
+
   <script src="game.js"></script>
 
 </body>
