@@ -406,6 +406,71 @@ function drawBlock(ctx, x, y, color) {
   ctx.fillRect(x*dx, y*dy, dx, dy);
   ctx.strokeRect(x*dx, y*dy, dx, dy)
 }
+//-------------------------------------------------------------------------
+// Let's set some communication functionality.
+//-------------------------------------------------------------------------
+
+function submit_score(){
+  var message = {
+      messageType: "SCORE",
+      score: score
+  };
+  parent.postMessage(message,'*');
+}
+
+function save_game() {
+    message =  {
+            messageType: "SAVE",
+            gameState: {
+                dx: dx,
+                dy: dx,
+                blocks: blocks,
+                actions: actions,
+                playing: playing,
+                dt: dt,
+                current: current,
+                next: next,
+                score: score,
+                vscore: vscore,
+                rows: rows,
+                step: step
+            },
+            score: diamondsCollected,
+        };
+        parent.postMessage(message,'*');
+}
+
+function load_game() {
+    var message = {
+        messageType: "LOAD_REQUEST",
+    };
+    parent.postMessage(message,'*');
+    // Listen incoming messages, and load the game
+    window.addEventListener("message", function(evt) {
+        if(evt.data.messageType === "LOAD") {
+            loadGame(evt.data.gameState);
+        } else if (evt.data.messageType === "ERROR") {
+            alert(evt.data.text);
+        }
+}
+
+function loadGame(data){
+    if (data !== "" && data !== null) {
+        dx = data.dx;
+        dy = data.dy;
+        blocks = data.blocks;
+        actions = data.actions;
+        playing = data.playing;
+        dt = data.dt;
+        current = data.current;
+        next = data.next;
+        score = data.score;
+        vscore = data.vscore;
+        rows = data.rows;
+        step = data.step;
+    }
+}
+
 
 //-------------------------------------------------------------------------
 // FINALLY, lets run the game
