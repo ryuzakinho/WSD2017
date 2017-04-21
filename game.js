@@ -451,14 +451,16 @@ function load_game() {
     var message = {
         messageType: "LOAD_REQUEST",
     };
-    parent.postMessage(message,'*');
+    parent.postMessage(message, '*');
     // Listen incoming messages, and load the game
-    window.addEventListener("message", function(evt) {
-        if(evt.data.messageType === "LOAD") {
+    window.addEventListener("message", function (evt) {
+        if (evt.data.messageType === "LOAD") {
             loadGame(evt.data.gameState);
         } else if (evt.data.messageType === "ERROR") {
             alert(evt.data.text);
         }
+    });
+
 }
 
 function loadGame(data){
@@ -479,8 +481,10 @@ function loadGame(data){
 }
 
 
+
 //-------------------------------------------------------------------------
 // FINALLY, lets run the game
 //-------------------------------------------------------------------------
 
 run();
+
