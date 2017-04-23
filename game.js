@@ -442,7 +442,7 @@ function save_game() {
                 rows: rows,
                 step: step
             },
-            score: diamondsCollected,
+            score: score,
         };
         parent.postMessage(message,'*');
 }
