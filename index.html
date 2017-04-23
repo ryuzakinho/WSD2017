@@ -31,8 +31,7 @@
       text-align:center
     }
   </style>
-
-  <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    
   <script>
   /* global $, alert */
 
@@ -50,6 +49,7 @@
               "score": parseFloat($("#score").text())
           };
           window.parent.postMessage(msg, "*");
+          console.log(msg);
       });
 
       // Sends this game's state to the service.
