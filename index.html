@@ -36,7 +36,16 @@
   /* global $, alert */
 
   document.ready(function () {
-      "use strict";
+      "use strict"
+
+      var message = {
+        messageType: "SETTING",
+        options: {
+            "width": 512, //Integer
+            "height": 400 //Integer
+        }
+    };
+    parent.postMessage(message,'*');
 
       // These variable track the state of this "game"
       var playerItems = [];
