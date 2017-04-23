@@ -13,7 +13,7 @@ message = {
     messageType: "SETTING",
     options: {
         "width": 512, //Integer
-        "height": 480 //Integer
+        "height": 400 //Integer
     }
 };
 parent.postMessage(message,'*');
