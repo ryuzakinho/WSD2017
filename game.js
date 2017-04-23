@@ -12,8 +12,8 @@ v+1E3){l=Math.round(u*1E3/(j-v));w=Math.min(w,l);x=Math.max(x,l);s(y.data,Math.m
 message = {
     messageType: "SETTING",
     options: {
-        "width": 1024, //Integer
-        "height": 2048 //Integer
+        "width": 512, //Integer
+        "height": 480 //Integer
     }
 };
 parent.postMessage(message,'*');
